@@ -18,6 +18,7 @@ addons:
 
 install:
   - sudo pip install cpp-coveralls
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install valgrind; fi
 
 script:
   - mkdir Build
