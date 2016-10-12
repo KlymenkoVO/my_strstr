@@ -7,6 +7,15 @@ compiler:
   - clang
   - gcc
 
+os:
+  - linux
+  - osx
+
+addons:
+  apt:
+    packages:
+    - valgrind
+
 install:
   - sudo pip install cpp-coveralls
 
@@ -15,7 +24,7 @@ script:
   - cd Build
   - cmake ..
   - make
-  - ./unit_tests
+  - valgrind --leak-check=yes ./unit_tests
 
 after_success:
   - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
