@@ -39,7 +39,7 @@ after_build:
 #  - DIR /S C:\ > C:\projects\my_strstr\listdir.log
 #  - TREE /F C:\ > C:\projects\my_strstr\tree.log
 #  - 7z a -t7z logs.7z C:\projects\my_strstr\*.log
-  - make test
+  - ctest --output-on-failure
 
 #artifacts:
 #  - path: logs.7z
