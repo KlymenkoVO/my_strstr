@@ -25,7 +25,7 @@ install: # by default, all script lines are interpreted as batch
   - git submodule update --init external/googletest
 
 build:
-  project: ALL_BUILD.vcxproj
+  project: Build/ALL_BUILD.vcxproj
 
 # scripts to run before build
 before_build:
