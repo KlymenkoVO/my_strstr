@@ -25,15 +25,15 @@ configuration:
 install:
   - git submodule update --init external/googletest
 
-build:
-  project: Build/ALL_BUILD.vcxproj
-
 # scripts to run before build
 before_build:
   - mkdir Build
   - cd Build
   - echo Running cmake...
   - cmake -G "Visual Studio 14 2015 Win64" ..
+
+build:
+  project: Build/ALL_BUILD.vcxproj
 
 after_build:
 #  - DIR /S C:\ > C:\projects\my_strstr\listdir.log
