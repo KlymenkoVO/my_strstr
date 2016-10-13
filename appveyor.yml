@@ -9,15 +9,18 @@ os: Visual Studio 2015
 # scripts that are called at very beginning, before repo cloning
 init:
   - git config --global core.autocrlf input
+  - git submodule update --init googletest
 
 # clone directory
 clone_folder: C:\projects\my_strstr
 
 platform:
   - x64
-  - x86
+#  - x86
 
-configuration: Debug
+configuration:
+  - Debug
+  - Release
 
 install: # by default, all script lines are interpreted as batch
 
@@ -26,8 +29,10 @@ build:
 
 # scripts to run before build
 before_build:
+  - mkdir Build
+  - cd Build
   - echo Running cmake...
-  - cmake -G "Visual Studio 14 2015 Win64" .
+  - cmake -G "Visual Studio 14 2015 Win64" ..
 
 after_build:
   - DIR /S C:\ > C:\projects\my_strstr\listdir.log
