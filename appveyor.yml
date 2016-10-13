@@ -26,10 +26,8 @@ build:
 
 # scripts to run before build
 before_build:
-  - mkdir Build
-  - cd Build
   - echo Running cmake...
-  - cmake -G "Visual Studio 14 2015 Win64" ..
+  - cmake -G "Visual Studio 14 2015 Win64" .
 
 after_build:
   - DIR /S C:\ > C:\projects\my_strstr\listdir.log
