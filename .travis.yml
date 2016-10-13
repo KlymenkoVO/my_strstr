@@ -11,6 +11,10 @@ os:
   - linux
 #  - osx
 
+env:
+  - CMAKE_BUILD_TYPE=Release
+  - CMAKE_BUILD_TYPE=Debug
+
 addons:
   apt:
     packages:
