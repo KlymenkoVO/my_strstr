@@ -63,8 +63,11 @@ target_link_libraries(
     unit_tests
     googletest
     example
-    pthread
 )
+
+if(NOT MSVC)
+    target_link_libraries(unit_tests pthread)
+endif()
 
 include(CTest)
 enable_testing()
