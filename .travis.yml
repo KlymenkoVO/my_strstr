@@ -29,7 +29,7 @@ script:
   - cd Build
   - cmake ..
   - make
-  - valgrind --leak-check=yes ./unit_tests
+  - valgrind --leak-check=yes make test
 
 after_success:
   - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
