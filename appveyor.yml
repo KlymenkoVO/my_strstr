@@ -21,7 +21,8 @@ configuration:
   - Debug
   - Release
 
-install: # by default, all script lines are interpreted as batch
+# by default, all script lines are interpreted as batch
+install:
   - git submodule update --init external/googletest
 
 build:
@@ -35,11 +36,11 @@ before_build:
   - cmake -G "Visual Studio 14 2015 Win64" ..
 
 after_build:
-  - DIR /S C:\ > C:\projects\my_strstr\listdir.log
-  - TREE /F C:\ > C:\projects\my_strstr\tree.log
-  - 7z a -t7z logs.7z C:\projects\my_strstr\*.log
-#  - test\testrun.bat
+#  - DIR /S C:\ > C:\projects\my_strstr\listdir.log
+#  - TREE /F C:\ > C:\projects\my_strstr\tree.log
+#  - 7z a -t7z logs.7z C:\projects\my_strstr\*.log
+  - make test
 
-artifacts:
-  - path: logs.7z
-    name: ListDir
+#artifacts:
+#  - path: logs.7z
+#    name: ListDir
