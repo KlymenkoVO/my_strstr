@@ -5,10 +5,14 @@ project(gtest-demo)
 enable_language(C CXX)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
-    set(CMAKE_CXX_FLAGS         "-Wall -Wno-unknown-pragmas -Wno-sign-compare -Woverloaded-virtual -Wwrite-strings -Wno-unused")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic")
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
+    endif()
+
     set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g3")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-    
+
     SET(ENABLE_CXX11 "-std=c++11")
 
     EXECUTE_PROCESS(COMMAND "${CMAKE_CXX_COMPILER} -dumpversion" OUTPUT_VARIABLE GCC_VERSION)
@@ -18,6 +22,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
     
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ENABLE_CXX11} -fprofile-arcs -ftest-coverage")
 elseif(MSVC)
+    set(CMAKE_CXX_FLAGS "/W4 /Wp64")
     set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG /Od")
     set(CMAKE_CXX_FLAGS_RELEASE "/O2")
 endif()
