@@ -16,6 +16,7 @@ env:
   - CMAKE_BUILD_TYPE=Debug
 
 addons:
+  artifacts: true
   apt:
     sources:
     - ubuntu-toolchain-r-test
