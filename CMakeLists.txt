@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-project(gtest-demo)
+set(PROJECT_NAME "MyStrStr")
+project(${PROJECT_NAME})
 
 enable_language(C CXX)
 
@@ -60,7 +61,7 @@ add_executable(
     unit_tests
     test/main.cpp
     test/test_my_strstr.cpp
-    )
+)
 
 add_dependencies(unit_tests googletest)
 
@@ -78,3 +79,21 @@ include(CTest)
 enable_testing()
 
 add_test(unit ${PROJECT_BINARY_DIR}/unit_tests)
+
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(COVERAGE_EXCLUDES '/usr/include/*'
+                          '/usr/lib/*'
+                          '/usr/local/lib/*'
+                          '${PROJECT_SOURCE_DIR}/test/*'
+                          '${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/*'
+    )
+    include(CodeCoverage)
+    setup_target_for_coverage(NAME "${PROJECT_NAME}_coverage"
+                              EXECUTABLE "${PROJECT_BINARY_DIR}/unit_tests"
+                              DEPENDENCIES "${PROJECT_BINARY_DIR}/unit_tests")
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    target_link_libraries(unit_tests gcov)
+endif()
