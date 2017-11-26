@@ -37,7 +37,7 @@ script:
   - gcc --version
   - mkdir Build
   - cd Build
-  - cmake ..
+  - cmake .. -DBUILD_TESTING=$BUILD_TESTING -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE
   - make
   - valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure
 
