@@ -31,7 +31,7 @@ addons:
 
 install:
   - sudo pip install cpp-coveralls
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install valgrind; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install valgrind lcov; fi
 
 script:
   - export CXX="g++-5"
@@ -45,7 +45,7 @@ script:
   - valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure
 
 after_success:
-  - if [ "$CMAKE_BUILD_TYPE" == "Debug" ]; then cd Build && make Turtle_coverage; fi
+  - if [ "$CMAKE_BUILD_TYPE" == "Debug" ]; then cd ${TRAVIS_BUILD_DIR}/Build && make Turtle_coverage; fi
 
 notifications:
   email: false
