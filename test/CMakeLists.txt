@@ -17,14 +17,14 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
                               '/usr/lib/*'
                               '/usr/local/lib/*'
                               '${PROJECT_SOURCE_DIR}/test/*'
-                              'gtest-*'
+                              '${PROJECT_SOURCE_DIR}/external/*'
         )
         setup_target_for_coverage(NAME "${PROJECT_NAME}_coverage"
-                                  EXECUTABLE "${PROJECT_BINARY_DIR}/unit_tests"
-                                  DEPENDENCIES "${PROJECT_BINARY_DIR}/unit_tests"
+                                  EXECUTABLE ctest
+                                  DEPENDENCIES unit_tests
         )
         target_link_libraries(unit_tests gcov)
         target_compile_options(unit_tests PRIVATE "-fprofile-arcs" "-ftest-coverage")
-        message(STATUS "Coverage set up")
+        message(STATUS "Coverage set up.")
     endif()
 endif()

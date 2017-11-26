@@ -39,16 +39,15 @@ script:
   - cd Build
   - cmake ..
   - make
-  - valgrind --leak-check=yes ctest --output-on-failure
+  - valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure
 
 after_success:
-after_success:
-  # Creating report
   - cd ${TRAVIS_BUILD_DIR}
-  - lcov --directory . --capture --output-file coverage.info # capture coverage info
-  - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
-  - lcov --list coverage.info #debug info
-  - genhtml --ignore-errors source coverage.info --output-directory=coverage_report
+  - make Turtle_coverage
+  #- lcov --directory . --capture --output-file coverage.info # capture coverage info
+  #- lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
+  #- lcov --list coverage.info #debug info
+  #- genhtml --ignore-errors source coverage.info --output-directory=coverage_report
   #- coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
 
 notifications:
