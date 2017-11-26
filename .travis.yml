@@ -45,9 +45,7 @@ script:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure; else ctest; fi
 
 after_success:
-  - echo "${TRAVIS_BUILD_DIR}/Build"
-  - ls "${TRAVIS_BUILD_DIR}/Build"
-  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [ "$CXX" == "g++" ] && [ "$CMAKE_BUILD_TYPE" == "Debug" ]; then cd "${TRAVIS_BUILD_DIR}/Build" && make Turtle_coverage; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [[ "$CXX" == *"g++"* ]] && [ "$CMAKE_BUILD_TYPE" == "Debug" ]; then cd "${TRAVIS_BUILD_DIR}/Build" && make Turtle_coverage; fi
 
 notifications:
   email: false
