@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-set(PROJECT_NAME "MyStrStr")
+set(PROJECT_NAME "Turtle")
 project(${PROJECT_NAME})
 
 enable_language(C CXX)
+
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic")
@@ -28,72 +30,28 @@ elseif(MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "/O2")
 endif()
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/src
-)
+# Generic output
+message(STATUS "Host processor is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+message(STATUS "Current build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Current build type flags: ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}}")
+
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
 add_library(
-    example
-    src/my_strstr.cpp
+    turtle
+    src/Turtle.cpp
+    src/Painter.cpp
 )
-set_property(TARGET example PROPERTY CXX_STANDARD 11)
-set_property(TARGET example PROPERTY CXX_STANDARD_REQUIRED ON)
+set_property(TARGET turtle PROPERTY CXX_STANDARD 11)
+set_property(TARGET turtle PROPERTY CXX_STANDARD_REQUIRED ON)
 
-set(GOOGLETEST_ROOT external/googletest/googletest CACHE STRING "Google Test source root")
+target_link_libraries(turtle)
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}
-    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/include
-)
-
-set(GOOGLETEST_SOURCES
-    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest-all.cc
-    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest_main.cc
-)
-
-foreach(_source ${GOOGLETEST_SOURCES})
-    set_source_files_properties(${_source} PROPERTIES GENERATED 1)
-endforeach()
-
-add_library(googletest ${GOOGLETEST_SOURCES})
-
-add_executable(
-    unit_tests
-    test/main.cpp
-    test/test_my_strstr.cpp
-)
-
-add_dependencies(unit_tests googletest)
-
-target_link_libraries(
-    unit_tests
-    googletest
-    example
-)
-
-if(NOT MSVC)
-    target_link_libraries(unit_tests pthread)
-endif()
-
-include(CTest)
-enable_testing()
-
-add_test(unit ${PROJECT_BINARY_DIR}/unit_tests)
-
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
-if(CMAKE_COMPILER_IS_GNUCXX)
-    set(COVERAGE_EXCLUDES '/usr/include/*'
-                          '/usr/lib/*'
-                          '/usr/local/lib/*'
-                          '${PROJECT_SOURCE_DIR}/test/*'
-                          '${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/*'
-    )
-    include(CodeCoverage)
-    setup_target_for_coverage(NAME "${PROJECT_NAME}_coverage"
-                              EXECUTABLE "${PROJECT_BINARY_DIR}/unit_tests"
-                              DEPENDENCIES "${PROJECT_BINARY_DIR}/unit_tests")
-endif()
-
-if(CMAKE_COMPILER_IS_GNUCXX)
-    target_link_libraries(unit_tests gcov)
-endif()
+# Testing
+if(BUILD_TESTING) 
+  include(CTest)
+  include(GTest)
+  enable_testing()
+  
+  add_subdirectory(test)
+endif(BUILD_TESTING)
