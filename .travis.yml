@@ -42,7 +42,7 @@ script:
   - valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure
 
 after_success:
-  - cd ${TRAVIS_BUILD_DIR}
+  - cd Build
   - if [ "$CMAKE_BUILD_TYPE" == "Debug" ]; then make Turtle_coverage; fi
   #- lcov --directory . --capture --output-file coverage.info # capture coverage info
   #- lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
