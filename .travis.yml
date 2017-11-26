@@ -42,7 +42,7 @@ script:
   - cd Build
   - cmake .. -DBUILD_TESTING=$BUILD_TESTING -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE
   - make
-  - valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure; else ctest; fi
 
 after_success:
   - if [ "$CMAKE_BUILD_TYPE" == "Debug" ]; then cd ${TRAVIS_BUILD_DIR}/Build && make Turtle_coverage; fi
