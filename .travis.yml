@@ -34,10 +34,10 @@ install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install valgrind lcov; fi
 
 script:
-  - export CXX="g++-5"
-  - export CC="gcc-5"
+  - if [ "$CXX" == "g++" ] && [ -x "$(command -v g++-5)" ]; then export CXX="g++-5"; fi
+  - if [ "$CC" == "gcc" ] && [ -x "$(command -v gcc-5)" ]; then export CC="gcc-5"; fi
   - export GCOV="gcov-5"
-  - gcc --version
+  - ${CXX} --version
   - mkdir Build
   - cd Build
   - cmake .. -DBUILD_TESTING=$BUILD_TESTING -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE
