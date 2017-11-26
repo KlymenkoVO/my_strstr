@@ -12,8 +12,8 @@ os:
 #  - osx
 
 env:
-  - CMAKE_BUILD_TYPE=Release
-  - CMAKE_BUILD_TYPE=Debug
+  - CMAKE_BUILD_TYPE=Release -DBUILD_TESTING=1
+  - CMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=1
 
 addons:
   artifacts: true
