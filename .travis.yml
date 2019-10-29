@@ -1,0 +1,51 @@
+language:
+  - cpp
+
+sudo: required
+
+compiler:
+  - clang
+  - gcc
+
+os:
+  - linux
+  - osx
+
+env:
+  global:
+    - BUILD_TESTING=1
+  matrix:
+    - CMAKE_BUILD_TYPE=Release 
+    - CMAKE_BUILD_TYPE=Debug
+
+addons:
+  artifacts: true
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - valgrind
+    - gcc-5
+    - g++-5
+    - lcov
+
+install:
+  - sudo pip install cpp-coveralls
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew install valgrind lcov; fi
+
+script:
+  - if [ "$CXX" == "g++" ] && [ -x "$(command -v g++-5)" ]; then export CXX="g++-5"; fi
+  - if [ "$CC" == "gcc" ] && [ -x "$(command -v gcc-5)" ]; then export CC="gcc-5"; fi
+  - export GCOV="gcov-5"
+  - ${CXX} --version
+  - mkdir Build
+  - cd Build
+  - cmake .. -DBUILD_TESTING=$BUILD_TESTING -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE
+  - make
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then valgrind --leak-check=full --show-leak-kinds=all ctest --output-on-failure; else ctest; fi
+
+after_success:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [[ "$CXX" == *"g++"* ]] && [ "$CMAKE_BUILD_TYPE" == "Debug" ]; then cd "${TRAVIS_BUILD_DIR}/Build" && make Turtle_coverage; fi
+
+notifications:
+  email: false
