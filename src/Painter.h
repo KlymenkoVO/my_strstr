@@ -1,5 +1,6 @@
 #pragma once
 
+// Class Painter.
 class Painter {
 public:
     enum class TurnDirection {
